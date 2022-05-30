@@ -99,7 +99,7 @@ const psychoJS = new PsychoJS({
 // open window:
 psychoJS.openWindow({
   fullscr: true,
-  color: new util.Color([0, 0, 0]),
+  color: new util.Color('#D8E6E4'),
   units: 'height',
   waitBlanking: true
 });
@@ -156,9 +156,10 @@ psychoJS.start({
     {'name': 'imgs/slides/slide-09.png', 'path': 'imgs/slides/slide-09.png'},
     {'name': 'imgs/slides/slide-10.png', 'path': 'imgs/slides/slide-10.png'},
     {'name': 'sequences/crayon-2yo.csv', 'path': 'sequences/crayon-2yo.csv'},
+    {'name': 'sequences/day-night-2yo.csv', 'path': 'sequences/day-night-2yo.csv'},
     {'name': 'sequences/day-night-3yo.csv', 'path': 'sequences/day-night-3yo.csv'},
     {'name': 'sequences/day-night-4yo.csv', 'path': 'sequences/day-night-4yo.csv'},
-    {'name': 'sequences/elephant-2yo.csv', 'path': 'sequences/elephant-2yo.csv'}
+    {'name': 'sequences/elephant-2yo.csv', 'path': 'sequences/elephant-2yo.csv'},
   ]
 });
 
@@ -201,8 +202,8 @@ var CONTINUE_SIZE;
 var CONTINUE_POS;
 var DECK_SIZE;
 var CARD_SIZE;
-var NEW_CARD_POS;
 var BOX_SIZE;
+var NEW_CARD_POS;
 var GLOBAL_CONT;
 var terminate_experiment;
 var practice_passed;
@@ -232,7 +233,6 @@ var box2;
 var trialHeader;
 var trialFeedback;
 var trialDebug;
-var wiperClock;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -243,47 +243,61 @@ async function experimentInit() {
   USE_AUDIO = false;
   TASK_NAME = expInfo["Task"];
   age_months_str = expInfo["Age (months)"];
-  age_months = null;
+  /* Result will depend on the behavior of Number.parseFloat() */
+  /* We know that it will at least interpret leading numbers, e.g. '123abc' as 123 */
+  age_months = Number.parseFloat(age_months_str);
+  if ((age_months.toString() === "NaN")) {
+      throw `Invalid value for Age (months): "${age_months_str}". Please reload the page and provide a valid value.`;
+  }
+  /* Make this a function */
   if ((TASK_NAME === "Elephant")) {
+      if ((age_months > 24)) {
+          throw `No suitable conditions file for Elephant task for given age (${age_months} months). Please reload the page and provide an age that is 24 months or less.`;
+      }
       conditions_file = "sequences/elephant-2yo.csv";
   } else {
       if ((TASK_NAME === "Crayon")) {
+          if ((age_months > 24)) {
+              throw `No suitable conditions file for Crayon task for given age (${age_months} months). Please reload the page and provide an age that is 24 months or less.`;
+          }
           conditions_file = "sequences/crayon-2yo.csv";
       } else {
           if ((TASK_NAME === "Day/Night")) {
-              age_months = Number.parseFloat(age_months_str);
-              if ((age_months.toString() === "NaN")) {
-                  throw `Please provide a valid value for Age (months). Current value: "${age_months_str}"`;
-              }
-              if ((age_months < 48)) {
-                  conditions_file = "sequences/day-night-3yo.csv";
+              if ((age_months <= 24)) {
+                  conditions_file = "sequences/day-night-2yo.csv";
               } else {
-                  conditions_file = "sequences/day-night-4yo.csv";
+                  if ((age_months <= 36)) {
+                      conditions_file = "sequences/day-night-3yo.csv";
+                  } else {
+                      conditions_file = "sequences/day-night-4yo.csv";
+                  }
               }
           }
       }
   }
   console.log(`age_months = ${age_months}`);
   console.log(`conditions_file = ${conditions_file}`);
-  EXIT_3_PRAC = false;
+  /* Exit if fail 3 repeat practices */
+  /* True if age > 24 months else False */
+  EXIT_3_PRAC = (age_months > 24);
   PICTURE_DELAY = 0.1;
   SLIDE_SIZE = [1.0, 0.562438];
   CONTINUE_SIZE = [0.228, 0.1];
   CONTINUE_POS = [0, (- 0.4)];
   DECK_SIZE = [0.2, 0.28];
   if ((TASK_NAME === "Day/Night")) {
+      /* Cards: 180x260 */
       CARD_SIZE = [0.18, 0.26];
+      /* Boxes: 450x370 */
+      BOX_SIZE = [0.35, 0.287778];
   } else {
-      if ((TASK_NAME === "Elephant")) {
-          CARD_SIZE = [0.18, 0.18];
-      } else {
-          if ((TASK_NAME === "Crayon")) {
-              CARD_SIZE = [0.18, 0.18];
-          }
-      }
+      /* Elephant and Crayon */
+      /* Cards: 600x361 */
+      CARD_SIZE = [0.3, 0.1805];
+      /* Boxes: 600x364 */
+      BOX_SIZE = [0.35, 0.212333];
   }
   NEW_CARD_POS = [0.011, (- 0.309)];
-  BOX_SIZE = [0.3375, 0.2775];
   GLOBAL_CONT = make_img("GLOBAL_CONT", "imgs/continue.png", CONTINUE_POS, CONTINUE_SIZE);
   terminate_experiment = false;
   practice_passed = false;
@@ -377,8 +391,6 @@ async function experimentInit() {
     depth: -3.0 
   });
   
-  // Initialize components for Routine "wiper"
-  wiperClock = new util.Clock();
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
   routineTimer = new util.CountdownTimer();  // to track time remaining of each (non-slip) routine
@@ -420,9 +432,6 @@ function trialsLoopBegin(trialsLoopScheduler, snapshot) {
       trialsLoopScheduler.add(trialRoutineBegin(snapshot));
       trialsLoopScheduler.add(trialRoutineEachFrame());
       trialsLoopScheduler.add(trialRoutineEnd());
-      trialsLoopScheduler.add(wiperRoutineBegin(snapshot));
-      trialsLoopScheduler.add(wiperRoutineEachFrame());
-      trialsLoopScheduler.add(wiperRoutineEnd());
       trialsLoopScheduler.add(endLoopIteration(trialsLoopScheduler, snapshot));
     }
     
@@ -1093,100 +1102,16 @@ function trialRoutineEnd() {
       }
     }
     if ((trialNum === maxScore)) {
+        /* Last trial of the block */
         if ((box1 !== null)) {
             hide(box1);
         }
         if ((box2 !== null)) {
             hide(box2);
         }
-    }
-    trialFeedback.text = "";
-    psychoJS.experiment.addData("choice", choice);
-    psychoJS.experiment.addData("correct", correct);
-    psychoJS.experiment.addData("trial_time", trial_time);
-    psychoJS.experiment.addData("cumulative_time", cumulative_time);
-    psychoJS.experiment.addData("coords_x", coords_x);
-    psychoJS.experiment.addData("coords_y", coords_y);
-    psychoJS.experiment.addData("coords_t", coords_t);
-    
-    // the Routine "trial" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset();
-    
-    return Scheduler.Event.NEXT;
-  };
-}
-
-
-var wiperComponents;
-function wiperRoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //------Prepare to start Routine 'wiper'-------
-    t = 0;
-    wiperClock.reset(); // clock
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    // update component parameters for each repeat
-    // keep track of which components have finished
-    wiperComponents = [];
-    
-    for (const thisComponent of wiperComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function wiperRoutineEachFrame() {
-  return async function () {
-    //------Loop for each frame of Routine 'wiper'-------
-    // get current time
-    t = wiperClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of wiperComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function wiperRoutineEnd() {
-  return async function () {
-    //------Ending Routine 'wiper'-------
-    for (const thisComponent of wiperComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    if ((trialNum === maxScore)) {
-        hide(DAY_BOX);
-        hide(NIGHT_BOX);
         hide(CARD_STACK);
         if ((tryNum === 3)) {
-            if ((EXIT_3_PRAC && (score < maxScore))) {
+            if ((((! practice_passed) && EXIT_3_PRAC) && (score < maxScore))) {
                 terminate_experiment = true;
             }
             practice_passed = false;
@@ -1197,10 +1122,18 @@ function wiperRoutineEnd() {
         }
         score = 0;
     }
+    trialFeedback.text = "";
+    psychoJS.experiment.addData("choice", choice);
+    psychoJS.experiment.addData("correct", correct);
+    psychoJS.experiment.addData("trial_time", trial_time);
+    psychoJS.experiment.addData("cumulative_time", cumulative_time);
+    psychoJS.experiment.addData("coords_x", coords_x);
+    psychoJS.experiment.addData("coords_y", coords_y);
+    psychoJS.experiment.addData("coords_t", coords_t);
     psychoJS.experiment.addData("end_timestamp", util.MonotonicClock.getDateStr());
     psychoJS.experiment.addData("total_seconds", globalClock.getTime());
     
-    // the Routine "wiper" was not non-slip safe, so reset the non-slip timer
+    // the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
     return Scheduler.Event.NEXT;
@@ -1244,8 +1177,6 @@ async function quitPsychoJS(message, isCompleted) {
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();
   }
-  
-  
   
   
   

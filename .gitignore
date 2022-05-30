@@ -1,6 +1,4 @@
-data0/
-imgs0/
-src/
-*.psyexp
-*.py
+/dev-*/
+/*.psyexp
+/*.py
 
