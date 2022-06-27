@@ -70,7 +70,6 @@ function make_sound(value, name = "sound") {
     return snd;
 }
 
-
 function dist_sq(x1, y1, x2, y2) {
     var dx, dy;
     [dx, dy] = [(x2 - x1), (y2 - y1)];
@@ -122,10 +121,10 @@ psychoJS.start({
   expInfo: expInfo,
   resources: [
     {'name': 'imgs/continue.png', 'path': 'imgs/continue.png'},
-    {'name': 'imgs/crayon/long-crayon-box.png', 'path': 'imgs/crayon/long-crayon-box.png'},
-    {'name': 'imgs/crayon/long-crayon.png', 'path': 'imgs/crayon/long-crayon.png'},
-    {'name': 'imgs/crayon/short-crayon-box.png', 'path': 'imgs/crayon/short-crayon-box.png'},
-    {'name': 'imgs/crayon/short-crayon.png', 'path': 'imgs/crayon/short-crayon.png'},
+    {'name': 'imgs/crayon/crayon-box-long.png', 'path': 'imgs/crayon/crayon-box-long.png'},
+    {'name': 'imgs/crayon/crayon-box-short.png', 'path': 'imgs/crayon/crayon-box-short.png'},
+    {'name': 'imgs/crayon/crayon-card-long-transp.png', 'path': 'imgs/crayon/crayon-card-long-transp.png'},
+    {'name': 'imgs/crayon/crayon-card-short-transp.png', 'path': 'imgs/crayon/crayon-card-short-transp.png'},
     {'name': 'imgs/day-night/day-box.png', 'path': 'imgs/day-night/day-box.png'},
     {'name': 'imgs/day-night/day-redline.png', 'path': 'imgs/day-night/day-redline.png'},
     {'name': 'imgs/day-night/day.png', 'path': 'imgs/day-night/day.png'},
@@ -133,10 +132,12 @@ psychoJS.start({
     {'name': 'imgs/day-night/night-box.png', 'path': 'imgs/day-night/night-box.png'},
     {'name': 'imgs/day-night/night-redline.png', 'path': 'imgs/day-night/night-redline.png'},
     {'name': 'imgs/day-night/night.png', 'path': 'imgs/day-night/night.png'},
-    {'name': 'imgs/elephant/big-elephant-box.png', 'path': 'imgs/elephant/big-elephant-box.png'},
-    {'name': 'imgs/elephant/big-elephant.png', 'path': 'imgs/elephant/big-elephant.png'},
-    {'name': 'imgs/elephant/small-elephant-box.png', 'path': 'imgs/elephant/small-elephant-box.png'},
-    {'name': 'imgs/elephant/small-elephant.png', 'path': 'imgs/elephant/small-elephant.png'},
+    {'name': 'imgs/elephant/elephant-box-big.png', 'path': 'imgs/elephant/elephant-box-big.png'},
+    {'name': 'imgs/elephant/elephant-box-small.png', 'path': 'imgs/elephant/elephant-box-small.png'},
+    {'name': 'imgs/elephant/elephant-card-big-transp.png', 'path': 'imgs/elephant/elephant-card-big-transp.png'},
+    {'name': 'imgs/elephant/elephant-card-small-transp.png', 'path': 'imgs/elephant/elephant-card-small-transp.png'},
+    {'name': 'imgs/elephant/penguin-box.png', 'path': 'imgs/elephant/penguin-box.png'},
+    {'name': 'imgs/elephant/penguin-card-transp.png', 'path': 'imgs/elephant/penguin-card-transp.png'},
     {'name': 'imgs/slides/new-slide-1.png', 'path': 'imgs/slides/new-slide-1.png'},
     {'name': 'imgs/slides/new-slide-2.png', 'path': 'imgs/slides/new-slide-2.png'},
     {'name': 'imgs/slides/new-slide-3.png', 'path': 'imgs/slides/new-slide-3.png'},
@@ -201,19 +202,13 @@ var terminate_experiment;
 var practice_passed;
 var inst_slide;
 var inst_sound;
-var begin1Mouse;
-var begin2Clock;
-var begin2Mouse;
-var begin3Clock;
-var begin3Mouse;
-var demoText;
-var trialClock;
 var MIN_DIST_SQ;
 var DRAG_MOUSE;
 var DAY_BOX;
 var NIGHT_BOX;
 var CARD_STACK;
 var BIG_ELEPHANT_BOX;
+var PENGUIN_BOX;
 var SMALL_ELEPHANT_BOX;
 var LONG_CRAYON_BOX;
 var SHORT_CRAYON_BOX;
@@ -222,6 +217,13 @@ var cumulative_time;
 var score;
 var box1;
 var box2;
+var begin1Mouse;
+var begin2Clock;
+var begin2Mouse;
+var begin3Clock;
+var begin3Mouse;
+var demoText;
+var trialClock;
 var trialHeader;
 var trialFeedback;
 var trialDebug;
@@ -269,9 +271,8 @@ async function experimentInit() {
   }
   console.log(`age_months = ${age_months}`);
   console.log(`conditions_file = ${conditions_file}`);
-  /* Exit if fail 3 repeat practices */
-  /* True if age > 24 months else False */
-  EXIT_3_PRAC = (age_months > 24);
+  /* Exit if fail 3 repeat practices (disabled) */
+  EXIT_3_PRAC = false;
   PICTURE_DELAY = 0.1;
   SLIDE_SIZE = [1.0, 0.562438];
   CONTINUE_SIZE = [0.228, 0.1];
@@ -295,6 +296,31 @@ async function experimentInit() {
   practice_passed = false;
   inst_slide = null;
   inst_sound = null;
+  MIN_DIST_SQ = (0.005 * 0.005);
+  DRAG_MOUSE = new core.Mouse({"win": psychoJS.window});
+  DAY_BOX = make_img("day_box", "imgs/day-night/day-box.png", [(- 0.4), 0.15]);
+  NIGHT_BOX = make_img("night_box", "imgs/day-night/night-box.png", [0.4, 0.15]);
+  CARD_STACK = make_img("card_stack", "imgs/day-night/deck.png", [0, (- 0.3)]);
+  BIG_ELEPHANT_BOX = make_img("big_elephant_box", "imgs/elephant/elephant-box-big.png", [(- 0.4), 0.15]);
+  PENGUIN_BOX = make_img("penguin_box", "imgs/elephant/penguin-box.png", [0.4, 0.15]);
+  SMALL_ELEPHANT_BOX = make_img("small_elephant_box", "imgs/elephant/elephant-box-small.png", [0.4, 0.15]);
+  LONG_CRAYON_BOX = make_img("long_crayon_box", "imgs/crayon/crayon-box-long.png", [(- 0.4), 0.15]);
+  SHORT_CRAYON_BOX = make_img("short_crayon_box", "imgs/crayon/crayon-box-short.png", [0.4, 0.15]);
+  if ((TASK_NAME === "Day/Night")) {
+      stimulus_stem = "imgs/day-night";
+  } else {
+      if ((TASK_NAME === "Elephant")) {
+          stimulus_stem = "imgs/elephant";
+      } else {
+          if ((TASK_NAME === "Crayon")) {
+              stimulus_stem = "imgs/crayon";
+          }
+      }
+  }
+  cumulative_time = 0.0;
+  score = 0;
+  box1 = null;
+  box2 = null;
   
   begin1Mouse = new core.Mouse({
     win: psychoJS.window,
@@ -325,31 +351,6 @@ async function experimentInit() {
   
   // Initialize components for Routine "trial"
   trialClock = new util.Clock();
-  MIN_DIST_SQ = (0.005 * 0.005);
-  DRAG_MOUSE = new core.Mouse({"win": psychoJS.window});
-  DAY_BOX = make_img("day_box", "imgs/day-night/day-box.png", [(- 0.4), 0.15]);
-  NIGHT_BOX = make_img("night_box", "imgs/day-night/night-box.png", [0.4, 0.15]);
-  CARD_STACK = make_img("card_stack", "imgs/day-night/deck.png", [0, (- 0.3)]);
-  BIG_ELEPHANT_BOX = make_img("big_elephant_box", "imgs/elephant/big-elephant-box.png", [(- 0.4), 0.15]);
-  SMALL_ELEPHANT_BOX = make_img("small_elephant_box", "imgs/elephant/small-elephant-box.png", [0.4, 0.15]);
-  LONG_CRAYON_BOX = make_img("long_crayon_box", "imgs/crayon/long-crayon-box.png", [(- 0.4), 0.15]);
-  SHORT_CRAYON_BOX = make_img("short_crayon_box", "imgs/crayon/short-crayon-box.png", [0.4, 0.15]);
-  if ((TASK_NAME === "Day/Night")) {
-      stimulus_stem = "imgs/day-night";
-  } else {
-      if ((TASK_NAME === "Elephant")) {
-          stimulus_stem = "imgs/elephant";
-      } else {
-          if ((TASK_NAME === "Crayon")) {
-              stimulus_stem = "imgs/crayon";
-          }
-      }
-  }
-  cumulative_time = 0.0;
-  score = 0;
-  box1 = null;
-  box2 = null;
-  
   trialHeader = new visual.TextStim({
     win: psychoJS.window,
     name: 'trialHeader',
@@ -886,8 +887,13 @@ function trialRoutineBegin(snapshot) {
                 unhide(CARD_STACK, DECK_SIZE);
             } else {
                 if ((TASK_NAME === "Elephant")) {
-                    box1 = BIG_ELEPHANT_BOX;
-                    box2 = SMALL_ELEPHANT_BOX;
+                    if ((Number.parseInt(blockNum) <= 3)) {
+                        box1 = BIG_ELEPHANT_BOX;
+                        box2 = PENGUIN_BOX;
+                    } else {
+                        box1 = BIG_ELEPHANT_BOX;
+                        box2 = SMALL_ELEPHANT_BOX;
+                    }
                 } else {
                     if ((TASK_NAME === "Crayon")) {
                         box1 = LONG_CRAYON_BOX;
@@ -900,7 +906,7 @@ function trialRoutineBegin(snapshot) {
         }
     }
     hide(GLOBAL_CONT);
-    dormant_card = make_img(stimulus, `${stimulus_stem}/${stimulus}.png`, NEW_CARD_POS);
+    dormant_card = make_img(stimulus, stimulus_file, NEW_CARD_POS);
     active_card = null;
     moving_card = null;
     drag_in_process = false;
@@ -1107,7 +1113,13 @@ function trialRoutineEnd() {
             hide(box2);
         }
         hide(CARD_STACK);
-        if ((tryNum === 3)) {
+        if (((age_months > 24) && (tryNum === 3))) {
+            if ((((! practice_passed) && EXIT_3_PRAC) && (score < maxScore))) {
+                terminate_experiment = true;
+            }
+            practice_passed = false;
+        }
+        if (((age_months <= 24) && (tryNum === 1))) {
             if ((((! practice_passed) && EXIT_3_PRAC) && (score < maxScore))) {
                 terminate_experiment = true;
             }
