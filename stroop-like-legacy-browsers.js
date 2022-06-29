@@ -194,9 +194,13 @@ var SLIDE_SIZE;
 var CONTINUE_SIZE;
 var CONTINUE_POS;
 var DECK_SIZE;
+var IMG_LEN;
 var CARD_SIZE;
 var BOX_SIZE;
+var BOX_POS_1;
+var BOX_POS_2;
 var NEW_CARD_POS;
+var CARD_STACK_POS;
 var GLOBAL_CONT;
 var terminate_experiment;
 var practice_passed;
@@ -278,19 +282,23 @@ async function experimentInit() {
   CONTINUE_SIZE = [0.228, 0.1];
   CONTINUE_POS = [0, (- 0.4)];
   DECK_SIZE = [0.2, 0.28];
+  IMG_LEN = null;
   if ((TASK_NAME === "Day/Night")) {
       /* Cards: 180x260 */
       CARD_SIZE = [0.18, 0.26];
-      /* Boxes: 450x370 */
+      /* Boxes: 450x370 (0.35 / 450 * 370 = 0.287778) */
       BOX_SIZE = [0.35, 0.287778];
   } else {
-      /* Elephant and Crayon */
-      /* Cards: 600x361 */
-      CARD_SIZE = [0.3, 0.1805];
-      /* Boxes: 600x364 */
-      BOX_SIZE = [0.35, 0.212333];
+      /* Elephant and Crayon are the only others */
+      /* New images: all 500x301 (make all same) */
+      IMG_LEN = 0.6;
+      BOX_SIZE = [IMG_LEN, ((IMG_LEN / 500) * 301)];
+      CARD_SIZE = BOX_SIZE;
   }
-  NEW_CARD_POS = [0.011, (- 0.309)];
+  BOX_POS_1 = [(- 0.4), 0.15];
+  BOX_POS_2 = [0.4, 0.15];
+  NEW_CARD_POS = [0, (- 0.3)];
+  CARD_STACK_POS = [(- 0.011), (- 0.291)];
   GLOBAL_CONT = make_img("GLOBAL_CONT", "imgs/continue.png", CONTINUE_POS, CONTINUE_SIZE);
   terminate_experiment = false;
   practice_passed = false;
@@ -298,14 +306,14 @@ async function experimentInit() {
   inst_sound = null;
   MIN_DIST_SQ = (0.005 * 0.005);
   DRAG_MOUSE = new core.Mouse({"win": psychoJS.window});
-  DAY_BOX = make_img("day_box", "imgs/day-night/day-box.png", [(- 0.4), 0.15]);
-  NIGHT_BOX = make_img("night_box", "imgs/day-night/night-box.png", [0.4, 0.15]);
-  CARD_STACK = make_img("card_stack", "imgs/day-night/deck.png", [0, (- 0.3)]);
-  BIG_ELEPHANT_BOX = make_img("big_elephant_box", "imgs/elephant/elephant-box-big.png", [(- 0.4), 0.15]);
-  PENGUIN_BOX = make_img("penguin_box", "imgs/elephant/penguin-box.png", [0.4, 0.15]);
-  SMALL_ELEPHANT_BOX = make_img("small_elephant_box", "imgs/elephant/elephant-box-small.png", [0.4, 0.15]);
-  LONG_CRAYON_BOX = make_img("long_crayon_box", "imgs/crayon/crayon-box-long.png", [(- 0.4), 0.15]);
-  SHORT_CRAYON_BOX = make_img("short_crayon_box", "imgs/crayon/crayon-box-short.png", [0.4, 0.15]);
+  DAY_BOX = make_img("day_box", "imgs/day-night/day-box.png", BOX_POS_1);
+  NIGHT_BOX = make_img("night_box", "imgs/day-night/night-box.png", BOX_POS_2);
+  CARD_STACK = make_img("card_stack", "imgs/day-night/deck.png", CARD_STACK_POS);
+  BIG_ELEPHANT_BOX = make_img("big_elephant_box", "imgs/elephant/elephant-box-big.png", BOX_POS_1);
+  PENGUIN_BOX = make_img("penguin_box", "imgs/elephant/penguin-box.png", BOX_POS_2);
+  SMALL_ELEPHANT_BOX = make_img("small_elephant_box", "imgs/elephant/elephant-box-small.png", BOX_POS_2);
+  LONG_CRAYON_BOX = make_img("long_crayon_box", "imgs/crayon/crayon-box-long.png", BOX_POS_1);
+  SHORT_CRAYON_BOX = make_img("short_crayon_box", "imgs/crayon/crayon-box-short.png", BOX_POS_2);
   if ((TASK_NAME === "Day/Night")) {
       stimulus_stem = "imgs/day-night";
   } else {
