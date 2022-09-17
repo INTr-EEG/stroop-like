@@ -13,7 +13,7 @@ const { round } = util;
 
 // store info about the experiment session:
 let expName = 'stroop-like';  // from the Builder filename that created this script
-let expInfo = {'Task': ['Day/Night', 'Elephant', 'Crayon'], 'ID': '', 'Age (months)': '', 'Demo': ['No', 'Yes'], 'Debug': ['No', 'Yes']};
+let expInfo = {'Task': ['Day/Night', 'Elephant', 'Crayon'], 'ID': '', 'Age': ['2 Years', '3 Years', '4 Years'], 'Demo': ['No', 'Yes'], 'Debug': ['No', 'Yes']};
 
 // Start code blocks for 'Before Experiment'
 
@@ -68,7 +68,7 @@ function make_img(name, file_path, pos = [0, 0], size = [0, 0]) {
 }
 
 function make_slide(filename, pos = [0, 0], size = SLIDE_SIZE) {
-    return make_img(filename, `imgs/slides/${filename}.png`, pos, size);
+    return make_img(filename, `resources/imgs/slides/${filename}.png`, pos, size);
 }
 
 function make_sound(value, name = "sound") {
@@ -128,39 +128,43 @@ psychoJS.start({
   expName: expName,
   expInfo: expInfo,
   resources: [
-    {'name': 'imgs/continue.png', 'path': 'imgs/continue.png'},
-    {'name': 'imgs/crayon/crayon-box-long.png', 'path': 'imgs/crayon/crayon-box-long.png'},
-    {'name': 'imgs/crayon/crayon-box-short.png', 'path': 'imgs/crayon/crayon-box-short.png'},
-    {'name': 'imgs/crayon/crayon-card-long-transp.png', 'path': 'imgs/crayon/crayon-card-long-transp.png'},
-    {'name': 'imgs/crayon/crayon-card-short-transp.png', 'path': 'imgs/crayon/crayon-card-short-transp.png'},
-    {'name': 'imgs/day-night/day-box.png', 'path': 'imgs/day-night/day-box.png'},
-    {'name': 'imgs/day-night/day-redline.png', 'path': 'imgs/day-night/day-redline.png'},
-    {'name': 'imgs/day-night/day.png', 'path': 'imgs/day-night/day.png'},
-    {'name': 'imgs/day-night/deck.png', 'path': 'imgs/day-night/deck.png'},
-    {'name': 'imgs/day-night/night-box.png', 'path': 'imgs/day-night/night-box.png'},
-    {'name': 'imgs/day-night/night-redline.png', 'path': 'imgs/day-night/night-redline.png'},
-    {'name': 'imgs/day-night/night.png', 'path': 'imgs/day-night/night.png'},
-    {'name': 'imgs/elephant/elephant-box-big.png', 'path': 'imgs/elephant/elephant-box-big.png'},
-    {'name': 'imgs/elephant/elephant-box-small.png', 'path': 'imgs/elephant/elephant-box-small.png'},
-    {'name': 'imgs/elephant/elephant-card-big-transp.png', 'path': 'imgs/elephant/elephant-card-big-transp.png'},
-    {'name': 'imgs/elephant/elephant-card-small-transp.png', 'path': 'imgs/elephant/elephant-card-small-transp.png'},
-    {'name': 'imgs/elephant/penguin-box.png', 'path': 'imgs/elephant/penguin-box.png'},
-    {'name': 'imgs/elephant/penguin-card-transp.png', 'path': 'imgs/elephant/penguin-card-transp.png'},
-    {'name': 'imgs/slides/new-slide-1.png', 'path': 'imgs/slides/new-slide-1.png'},
-    {'name': 'imgs/slides/new-slide-2.png', 'path': 'imgs/slides/new-slide-2.png'},
-    {'name': 'imgs/slides/new-slide-3.png', 'path': 'imgs/slides/new-slide-3.png'},
-    {'name': 'imgs/slides/new-slide-4.png', 'path': 'imgs/slides/new-slide-4.png'},
-    {'name': 'imgs/slides/slide-03.png', 'path': 'imgs/slides/slide-03.png'},
-    {'name': 'imgs/slides/slide-04.png', 'path': 'imgs/slides/slide-04.png'},
-    {'name': 'imgs/slides/slide-06.png', 'path': 'imgs/slides/slide-06.png'},
-    {'name': 'imgs/slides/slide-07.png', 'path': 'imgs/slides/slide-07.png'},
-    {'name': 'imgs/slides/slide-09.png', 'path': 'imgs/slides/slide-09.png'},
-    {'name': 'imgs/slides/slide-10.png', 'path': 'imgs/slides/slide-10.png'},
-    {'name': 'sequences/crayon-2yo.csv', 'path': 'sequences/crayon-2yo.csv'},
-    {'name': 'sequences/day-night-2yo.csv', 'path': 'sequences/day-night-2yo.csv'},
-    {'name': 'sequences/day-night-3yo.csv', 'path': 'sequences/day-night-3yo.csv'},
-    {'name': 'sequences/day-night-4yo.csv', 'path': 'sequences/day-night-4yo.csv'},
-    {'name': 'sequences/elephant-2yo.csv', 'path': 'sequences/elephant-2yo.csv'},
+    {'name': 'resources/imgs/continue.png', 'path': 'resources/imgs/continue.png'},
+    {'name': 'resources/imgs/crayon/boxlongoutline_whbg.png', 'path': 'resources/imgs/crayon/boxlongoutline_whbg.png'},
+    {'name': 'resources/imgs/crayon/boxlongred_whbg.png', 'path': 'resources/imgs/crayon/boxlongred_whbg.png'},
+    {'name': 'resources/imgs/crayon/boxshortoutline_whbg.png', 'path': 'resources/imgs/crayon/boxshortoutline_whbg.png'},
+    {'name': 'resources/imgs/crayon/boxshortred_whbg.png', 'path': 'resources/imgs/crayon/boxshortred_whbg.png'},
+    {'name': 'resources/imgs/crayon/longred_whbg_transp.png', 'path': 'resources/imgs/crayon/longred_whbg_transp.png'},
+    {'name': 'resources/imgs/crayon/longyellow_whbg_transp.png', 'path': 'resources/imgs/crayon/longyellow_whbg_transp.png'},
+    {'name': 'resources/imgs/crayon/shortred_whbg_transp.png', 'path': 'resources/imgs/crayon/shortred_whbg_transp.png'},
+    {'name': 'resources/imgs/crayon/shortyellow_whbg_transp.png', 'path': 'resources/imgs/crayon/shortyellow_whbg_transp.png'},
+    {'name': 'resources/imgs/day-night/day-box.png', 'path': 'resources/imgs/day-night/day-box.png'},
+    {'name': 'resources/imgs/day-night/day-redline.png', 'path': 'resources/imgs/day-night/day-redline.png'},
+    {'name': 'resources/imgs/day-night/day.png', 'path': 'resources/imgs/day-night/day.png'},
+    {'name': 'resources/imgs/day-night/deck.png', 'path': 'resources/imgs/day-night/deck.png'},
+    {'name': 'resources/imgs/day-night/night-box.png', 'path': 'resources/imgs/day-night/night-box.png'},
+    {'name': 'resources/imgs/day-night/night-redline.png', 'path': 'resources/imgs/day-night/night-redline.png'},
+    {'name': 'resources/imgs/day-night/night.png', 'path': 'resources/imgs/day-night/night.png'},
+    {'name': 'resources/imgs/elephant/elephant-big-transp.png', 'path': 'resources/imgs/elephant/elephant-big-transp.png'},
+    {'name': 'resources/imgs/elephant/elephant-box-big.png', 'path': 'resources/imgs/elephant/elephant-box-big.png'},
+    {'name': 'resources/imgs/elephant/elephant-box-small.png', 'path': 'resources/imgs/elephant/elephant-box-small.png'},
+    {'name': 'resources/imgs/elephant/elephant-small-transp.png', 'path': 'resources/imgs/elephant/elephant-small-transp.png'},
+    {'name': 'resources/imgs/elephant/penguin-box.png', 'path': 'resources/imgs/elephant/penguin-box.png'},
+    {'name': 'resources/imgs/elephant/penguin-transp.png', 'path': 'resources/imgs/elephant/penguin-transp.png'},
+    {'name': 'resources/imgs/slides/new-slide-1.png', 'path': 'resources/imgs/slides/new-slide-1.png'},
+    {'name': 'resources/imgs/slides/new-slide-2.png', 'path': 'resources/imgs/slides/new-slide-2.png'},
+    {'name': 'resources/imgs/slides/new-slide-3.png', 'path': 'resources/imgs/slides/new-slide-3.png'},
+    {'name': 'resources/imgs/slides/new-slide-4.png', 'path': 'resources/imgs/slides/new-slide-4.png'},
+    {'name': 'resources/imgs/slides/slide-03.png', 'path': 'resources/imgs/slides/slide-03.png'},
+    {'name': 'resources/imgs/slides/slide-04.png', 'path': 'resources/imgs/slides/slide-04.png'},
+    {'name': 'resources/imgs/slides/slide-06.png', 'path': 'resources/imgs/slides/slide-06.png'},
+    {'name': 'resources/imgs/slides/slide-07.png', 'path': 'resources/imgs/slides/slide-07.png'},
+    {'name': 'resources/imgs/slides/slide-09.png', 'path': 'resources/imgs/slides/slide-09.png'},
+    {'name': 'resources/imgs/slides/slide-10.png', 'path': 'resources/imgs/slides/slide-10.png'},
+    {'name': 'resources/seqs/crayon-2yo.csv', 'path': 'resources/seqs/crayon-2yo.csv'},
+    {'name': 'resources/seqs/day-night-2yo.csv', 'path': 'resources/seqs/day-night-2yo.csv'},
+    {'name': 'resources/seqs/day-night-3yo.csv', 'path': 'resources/seqs/day-night-3yo.csv'},
+    {'name': 'resources/seqs/day-night-4yo.csv', 'path': 'resources/seqs/day-night-4yo.csv'},
+    {'name': 'resources/seqs/elephant-2yo.csv', 'path': 'resources/seqs/elephant-2yo.csv'},
   ]
 });
 
@@ -189,12 +193,13 @@ async function updateInfo() {
 
 
 var begin1Clock;
+var expVersion;
 var SHOW_DEMO;
 var SHOW_DEBUG;
 var USE_AUDIO;
 var TASK_NAME;
-var age_months_str;
-var age_months;
+var AGE_YEARS;
+var SEQ_DIR;
 var conditions_file;
 var EXIT_3_PRAC;
 var PICTURE_DELAY;
@@ -202,6 +207,7 @@ var SLIDE_SIZE;
 var CONTINUE_SIZE;
 var CONTINUE_POS;
 var DECK_SIZE;
+var MIN_DIST_SQ;
 var IMG_LEN;
 var CARD_SIZE;
 var BOX_SIZE;
@@ -214,17 +220,8 @@ var terminate_experiment;
 var practice_passed;
 var inst_slide;
 var inst_sound;
-var MIN_DIST_SQ;
 var DRAG_MOUSE;
-var DAY_BOX;
-var NIGHT_BOX;
 var CARD_STACK;
-var BIG_ELEPHANT_BOX;
-var PENGUIN_BOX;
-var SMALL_ELEPHANT_BOX;
-var LONG_CRAYON_BOX;
-var SHORT_CRAYON_BOX;
-var stimulus_stem;
 var cumulative_time;
 var score;
 var box1;
@@ -244,44 +241,24 @@ var routineTimer;
 async function experimentInit() {
   // Initialize components for Routine "begin1"
   begin1Clock = new util.Clock();
+  expVersion = "2022.09.17";
   SHOW_DEMO = (expInfo["Demo"] === "Yes");
   SHOW_DEBUG = (expInfo["Debug"] === "Yes");
   USE_AUDIO = false;
   TASK_NAME = expInfo["Task"];
-  age_months_str = expInfo["Age (months)"];
-  /* Result will depend on the behavior of Number.parseFloat() */
-  /* We know that it will at least interpret leading numbers, e.g. '123abc' as 123 */
-  age_months = Number.parseFloat(age_months_str);
-  if ((age_months.toString() === "NaN")) {
-      throw `Invalid value for Age (months): "${age_months_str}". Please reload the page and provide a valid value.`;
-  }
-  /* Make this a function */
-  if ((TASK_NAME === "Elephant")) {
-      if ((age_months > 24)) {
-          throw `No suitable conditions file for Elephant task for given age (${age_months} months). Please reload the page and provide an age that is 24 months or less.`;
+  AGE_YEARS = expInfo["Age"];
+  SEQ_DIR = "resources/seqs";
+  /* Check */
+  if (((TASK_NAME === "Elephant") || (TASK_NAME === "Crayon"))) {
+      if ((AGE_YEARS !== "2 Years")) {
+          throw `Please refresh and select '2 Years' for ${TASK_NAME} task.`;
       }
-      conditions_file = "sequences/elephant-2yo.csv";
+      conditions_file = {"Elephant": `${SEQ_DIR}/elephant-2yo.csv`, "Crayon": `${SEQ_DIR}/crayon-2yo.csv`}[TASK_NAME];
   } else {
-      if ((TASK_NAME === "Crayon")) {
-          if ((age_months > 24)) {
-              throw `No suitable conditions file for Crayon task for given age (${age_months} months). Please reload the page and provide an age that is 24 months or less.`;
-          }
-          conditions_file = "sequences/crayon-2yo.csv";
-      } else {
-          if ((TASK_NAME === "Day/Night")) {
-              if ((age_months <= 24)) {
-                  conditions_file = "sequences/day-night-2yo.csv";
-              } else {
-                  if ((age_months <= 36)) {
-                      conditions_file = "sequences/day-night-3yo.csv";
-                  } else {
-                      conditions_file = "sequences/day-night-4yo.csv";
-                  }
-              }
-          }
+      if ((TASK_NAME === "Day/Night")) {
+          conditions_file = {"2 Years": `${SEQ_DIR}/day-night-2yo.csv`, "3 Years": `${SEQ_DIR}/day-night-3yo.csv`, "4 Years": `${SEQ_DIR}/day-night-4yo.csv`}[AGE_YEARS];
       }
   }
-  console.log(`age_months = ${age_months}`);
   console.log(`conditions_file = ${conditions_file}`);
   /* Exit if fail 3 repeat practices (disabled) */
   EXIT_3_PRAC = false;
@@ -290,6 +267,7 @@ async function experimentInit() {
   CONTINUE_SIZE = [0.228, 0.1];
   CONTINUE_POS = [0, (- 0.4)];
   DECK_SIZE = [0.2, 0.28];
+  MIN_DIST_SQ = (0.005 * 0.005);
   IMG_LEN = null;
   if ((TASK_NAME === "Day/Night")) {
       /* Cards: 180x260 */
@@ -307,32 +285,13 @@ async function experimentInit() {
   BOX_POS_2 = [0.4, 0.15];
   NEW_CARD_POS = [0, (- 0.3)];
   CARD_STACK_POS = [(- 0.011), (- 0.291)];
-  GLOBAL_CONT = make_img("GLOBAL_CONT", "imgs/continue.png", CONTINUE_POS, CONTINUE_SIZE);
+  GLOBAL_CONT = make_img("GLOBAL_CONT", "resources/imgs/continue.png", CONTINUE_POS, CONTINUE_SIZE);
   terminate_experiment = false;
   practice_passed = false;
   inst_slide = null;
   inst_sound = null;
-  MIN_DIST_SQ = (0.005 * 0.005);
   DRAG_MOUSE = new core.Mouse({"win": psychoJS.window});
-  DAY_BOX = make_img("day_box", "imgs/day-night/day-box.png", BOX_POS_1);
-  NIGHT_BOX = make_img("night_box", "imgs/day-night/night-box.png", BOX_POS_2);
-  CARD_STACK = make_img("card_stack", "imgs/day-night/deck.png", CARD_STACK_POS);
-  BIG_ELEPHANT_BOX = make_img("big_elephant_box", "imgs/elephant/elephant-box-big.png", BOX_POS_1);
-  PENGUIN_BOX = make_img("penguin_box", "imgs/elephant/penguin-box.png", BOX_POS_2);
-  SMALL_ELEPHANT_BOX = make_img("small_elephant_box", "imgs/elephant/elephant-box-small.png", BOX_POS_2);
-  LONG_CRAYON_BOX = make_img("long_crayon_box", "imgs/crayon/crayon-box-long.png", BOX_POS_1);
-  SHORT_CRAYON_BOX = make_img("short_crayon_box", "imgs/crayon/crayon-box-short.png", BOX_POS_2);
-  if ((TASK_NAME === "Day/Night")) {
-      stimulus_stem = "imgs/day-night";
-  } else {
-      if ((TASK_NAME === "Elephant")) {
-          stimulus_stem = "imgs/elephant";
-      } else {
-          if ((TASK_NAME === "Crayon")) {
-              stimulus_stem = "imgs/crayon";
-          }
-      }
-  }
+  CARD_STACK = null;
   cumulative_time = 0.0;
   score = 0;
   box1 = null;
@@ -473,6 +432,7 @@ function begin1RoutineBegin(snapshot) {
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
     // update component parameters for each repeat
+    psychoJS.experiment.addData("expVersion", expVersion);
     is_demo = (tryNum === 0);
     is_practice = ((! is_demo) && (pracNum !== "NA"));
     if ((((slideFile1 === "NA") || practice_passed) || terminate_experiment)) {
@@ -893,23 +853,25 @@ function trialRoutineBegin(snapshot) {
         continueRoutine = false;
     } else {
         if ((trialNum === 1)) {
+            box1 = make_img("box1", box1_file, BOX_POS_1);
+            box2 = make_img("box2", box2_file, BOX_POS_2);
             if ((TASK_NAME === "Day/Night")) {
-                box1 = DAY_BOX;
-                box2 = NIGHT_BOX;
+                box1.name = "day_box";
+                box2.name = "night_box";
+                CARD_STACK = make_img("card_stack", "resources/imgs/day-night/deck.png", CARD_STACK_POS);
                 unhide(CARD_STACK, DECK_SIZE);
             } else {
                 if ((TASK_NAME === "Elephant")) {
+                    box1.name = "big_elephant_box";
                     if ((Number.parseInt(blockNum) <= 3)) {
-                        box1 = BIG_ELEPHANT_BOX;
-                        box2 = PENGUIN_BOX;
+                        box2.name = "penguin_box";
                     } else {
-                        box1 = BIG_ELEPHANT_BOX;
-                        box2 = SMALL_ELEPHANT_BOX;
+                        box2.name = "small_elephant_box";
                     }
                 } else {
                     if ((TASK_NAME === "Crayon")) {
-                        box1 = LONG_CRAYON_BOX;
-                        box2 = SHORT_CRAYON_BOX;
+                        box1.name = "long_crayon_box";
+                        box2.name = "short_crayon_box";
                     }
                 }
             }
@@ -922,7 +884,7 @@ function trialRoutineBegin(snapshot) {
     active_card = null;
     moving_card = null;
     drag_in_process = false;
-    if ((trialNum === maxScore)) {
+    if (((CARD_STACK !== null) && (trialNum === maxScore))) {
         hide(CARD_STACK);
     }
     feedback_delay_start = null;
@@ -1009,13 +971,7 @@ function trialRoutineEachFrame() {
     if ((DRAG_MOUSE.getPressed()[0] === 1)) {
         if (drag_in_process) {
             [x, y] = moving_card.pos = DRAG_MOUSE.getPos();
-            if ((coords_x.length > 0)) {
-                if ((dist_sq(coords_x.slice((- 1))[0], coords_y.slice((- 1))[0], x, y) > MIN_DIST_SQ)) {
-                    coords_x.push(round_dp(x));
-                    coords_y.push(round_dp(y));
-                    coords_t.push(round_dp(t));
-                }
-            } else {
+            if (((coords_x.length === 0) || (dist_sq(coords_x.slice((- 1))[0], coords_y.slice((- 1))[0], x, y) > MIN_DIST_SQ))) {
                 coords_x.push(round_dp(x));
                 coords_y.push(round_dp(y));
                 coords_t.push(round_dp(t));
@@ -1123,14 +1079,16 @@ function trialRoutineEnd() {
         if ((box2 !== null)) {
             hide(box2);
         }
-        hide(CARD_STACK);
-        if (((age_months > 24) && (tryNum === 3))) {
+        if ((CARD_STACK !== null)) {
+            hide(CARD_STACK);
+        }
+        if (((AGE_YEARS !== "2 Years") && (tryNum === 3))) {
             if ((((! practice_passed) && EXIT_3_PRAC) && (score < maxScore))) {
                 terminate_experiment = true;
             }
             practice_passed = false;
         }
-        if (((age_months <= 24) && (tryNum === 1))) {
+        if (((AGE_YEARS === "2 Years") && (tryNum === 1))) {
             if ((((! practice_passed) && EXIT_3_PRAC) && (score < maxScore))) {
                 terminate_experiment = true;
             }
@@ -1197,6 +1155,8 @@ async function quitPsychoJS(message, isCompleted) {
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();
   }
+  
+  
   
   
   

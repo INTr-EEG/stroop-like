@@ -2,6 +2,7 @@
 #
 # reduce-pngs.sh
 # 2022-05-30
+# 2022-06-09
 
 # We do not want to make participants wait for minutes for resource files to 
 # be downloaded before the experiment task starts. Children in particular 
@@ -17,12 +18,40 @@
 # imagemagick. For now, we aribitrarily fix a final image width of 600 pixels.
 
 readonly WD="$(realpath "${BASH_SOURCE%/*}/")"
-readonly SRC="$(realpath "${WD}/../dev-imgs/imgs-preprocessed_2022-05-30")"
+readonly SRC="$(realpath "${WD}/../dev-imgs/imgs-orig_2022-06-09")"
 readonly DEST="$(realpath "${WD}/../dev-imgs/imgs_$(date +'%Y-%m-%d')")"
+
+reduce_pngs() {
+    mkdir -p "$DEST"
+
+    for filepath in "$SRC"/*.png; do
+        [[ -f "$filepath" ]] || continue
+        local filename="${filepath##*/}"
+        local filename="${filename// /-}"
+        local png_file="${DEST}/${filename}"
+        cp -v "$filepath" "$png_file"
+    done
+
+    pngquant \
+        --force \
+        --skip-if-larger \
+        --ext '.png' \
+        --speed 1 \
+        --strip \
+        -- "$DEST"/*.png
+}
+
+time reduce_pngs
+
+# -----------------------------------------------------------------------------
+
+exit 1
+
+readonly SRC="$(realpath "${WD}/../dev-imgs/imgs-preprocessed_2022-05-30")"
 readonly WIDTH=600
 readonly MAX_JOBS=4
 
-reduce_pngs() {
+reduce_pngs_1() {
     mkdir -p "$DEST"
 
     for filepath in "$SRC"/*.png; do
