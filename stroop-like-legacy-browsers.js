@@ -5,7 +5,7 @@
 
 // store info about the experiment session:
 let expName = 'stroop-like';  // from the Builder filename that created this script
-let expInfo = {'Task': ['Day/Night', 'Elephant', 'Crayon'], 'ID': '', 'Age': ['2 Years', '3 Years', '4 Years'], 'Demo': ['No', 'Yes'], 'Debug': ['No', 'Yes']};
+let expInfo = {'Task': ['Day/Night', 'Elephant', 'Crayon'], 'participant': '', 'Age': ['2 Years', '3 Years', '4 Years'], 'Demo': ['No', 'Yes'], 'Debug': ['No', 'Yes']};
 
 // Start code blocks for 'Before Experiment'
 
